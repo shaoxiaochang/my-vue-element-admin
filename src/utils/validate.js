@@ -1,4 +1,5 @@
 /**
+ * 帳號名稱為 admin,editor
  * @param {string} str
  * @returns {Boolean}
  */

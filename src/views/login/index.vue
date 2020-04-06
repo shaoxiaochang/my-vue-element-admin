@@ -65,6 +65,9 @@ export default {
   name: "Login",
   components: {},
   data() {
+    /**
+     * reference: element form 表單驗證
+     */
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
         callback(new Error("Please enter the correct user name"));
@@ -99,25 +102,44 @@ export default {
     };
   },
   methods: {
+    /**
+     * 大寫提示
+     */
     checkCapslock(e) {
       const { key } = e;
       this.capsTooltip = key && key.length === 1 && key >= "A" && key <= "Z";
     },
+    /**
+     * 密碼顯示
+     */
     showPwd() {
       if (this.passwordType === "password") {
         this.passwordType = "";
       } else {
         this.passwordType = "password";
       }
-      // 更改数据后当你想立即使用js操作新的视图的时候需要使用它
+      // 更改數據後當你想立即使用js操作新的視圖的时候需要使用它
       this.$nextTick(() => {
         this.$refs.password.focus();
       });
     },
+    /**
+     * 登入
+     */
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true;
+          this.$store.dispatch('user/login', this.loginForm)
+            .then(() => {
+              this.loading = false
+            })
+            .catch(() => {
+              this.loading = false
+            })
+        } else {
+          console.log("error submit!!");
+          return false;
         }
       });
     }
@@ -162,9 +184,9 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+$bg: #2d3a4b;
+$dark_gray: #889aa4;
+$light_gray: #eee;
 
 .login-container {
   min-height: 100%;
